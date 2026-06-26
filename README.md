@@ -93,7 +93,7 @@ If this model helped you, **donate any amount** via Alipay — entirely optional
 如果这个模型对你有帮助,欢迎用支付宝**随意打赏**——完全自愿,纯属心意。
 
 <p align="center">
-  <img src="assets/donate-alipay.png" alt="Alipay donate / 支付宝打赏 — Jason Wang" width="280">
+  <img src="assets/donate-alipay.jpg" alt="Alipay donate / 支付宝打赏 — Jason Wang" width="280">
 </p>
 
 <p align="center"><sub>Alipay · Jason Wang</sub></p>
