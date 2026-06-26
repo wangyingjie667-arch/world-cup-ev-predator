@@ -10,6 +10,51 @@ description: "⚡ WORLD CUP EV PREDATOR ⚡ — value-betting / EV analysis engi
 
 ---
 
+## 📣 Manifesto — the house already won, the moment you paid
+
+It's not that you don't know football. The game is *built* so you bleed out slow.
+
+The house edge isn't luck. It's the **margin** — 6 to 12% skimmed off every match, more at the World Cup. Before the whistle blows, you're already down. Not a conspiracy; it's math baked into the rules. Over ten years and a million tickets, the machine grinds every retail bettor down to the cent.
+
+And here's the dirty part: **the cut isn't spread evenly.** It's piled thickest exactly where you love to bet — the short-priced favorite, "the strong team obviously wins." The safer it feels, the harder you're robbed. 体彩 knows you'll back Germany, so it crushes Germany's price to the bone, and you hand over your money with a smile.
+
+For years, retail has been the house's feed. The real probabilities, the real prices — the smart money always had them. You never did. You were always the one left holding the bag.
+
+**But you remember GameStop, right?**
+
+That was the moment a crowd of retail saw the cards in the house's hand and said: *we're not playing by your rules anymore.*
+
+**This project is the light you shine on that table.** Open source. Free. It does one thing: it slaps the real probabilities — forged by millions in live money — right onto your face, so for the first time you see exactly how many points the house just took from you, and how your beloved parlay funnels your cash into its mouth, slip by slip.
+
+We don't promise you'll get rich (keep reading — we'll tell you why nobody can). We promise one thing: **you stop being the mark. You cut the house's tax to the lowest on the internet. Together.**
+
+Now the technical part. Here's why this actually works.
+
+### Why #1: the smart money is genuinely accurate — I backtested 50 matches
+
+Talk is cheap. Every finished match this World Cup, I pulled Polymarket's real traded price at exactly **T-minus-60-minutes** (probabilities forged by millions in live money) and graded it against the **actual scoreline**. 50 matches, 150 outcome legs.
+
+![Calibration: what the market says happens, happens](../assets/calibration.svg)
+
+The market says "24% happens," it happened 23%; says "58%," it cashed 65% — **the dots sit right on the perfect line.** Brier score 0.527 (a coin-flip is 0.667); strip out draws and the top pick hits 89%. That's the "true win probability" you've been dreaming of.
+*(Honest caveat: Polymarket only, 50 matches — small, thin buckets are noisy, all marked on the chart. Pinnacle and the exchange weren't separately backtested — but in live pulls all four agreed within 1.5 points, singing the same note.)*
+
+### Why #2: the margin is hidden — and we can see it
+
+Same match, **Japan vs Sweden**: bet Japan to win, EV **−18%**; bet the draw nobody wants, EV **≈0%** — basically free. One bleeds you out, one barely costs a thing, and the gap is hidden where you never look. This model strips every bet bare and shows you where the margin is thin — bet the thin, walk past the thick.
+
+### Why #3: parlays are the trap — singles are the way out
+
+A parlay *feels* like swinging for the fences. It actually **multiplies** the margin. Same handful of matches: as a 2-leg parlay, −22% expected; as singles, −1.5%. The house's favorite customer is the guy clutching a short-odds parlay at 2 a.m. Don't be that guy.
+
+### Finally, the hard truth: you can't beat the house
+
+Long term you can't, nobody can, and anyone selling "guaranteed wins" is lying to you. This model won't make you win — it makes you **lose the least, weld the floor shut, and occasionally steal a lucky night.** Bet only what you can afford to lose. See the margin. Never parlay.
+
+*That's* what we mean by **Beat the house**: not knocking it out — you can't — but never again kneeling to feed it.
+
+---
+
 ## What this is
 
 A disciplined engine for betting **China Sports Lottery football (体彩竞彩足球)**. The whole philosophy is one sentence:
