@@ -36,13 +36,13 @@ The market says "24% happens," it happened 23%; says "58%," it cashed 65% — **
 
 Same match, **Japan vs Sweden**: bet Japan to win, EV **−18%**; bet the draw nobody wants, EV **≈0%** — basically free. One bleeds you out, one barely costs a thing, and the gap is hidden where you never look. This model strips every bet bare and shows you where the margin is thin — bet the thin, walk past the thick.
 
-### Why #3: parlays are the trap — singles are the way out
+### Why #3: parlaying *favorites* is the trap — the parlay itself isn't the sin
 
-A parlay *feels* like swinging for the fences. It actually **multiplies** the margin. Same handful of matches: as a 2-leg parlay, −22% expected; as singles, −1.5%. The house's favorite customer is the guy clutching a short-odds parlay at 2 a.m. Don't be that guy.
+A parlay *feels* like swinging for the fences; the cost is it **multiplies** the margin. Parlay **thick-margin favorites** and a 2-leg slip runs −22% expected; thin-margin singles run −1.5%. The house's favorite customer is the guy clutching a short-odds favorite parlay at 2 a.m. — don't be that guy. *(But parlaying genuinely **thin** legs to reach a ceiling a single can't touch is a different, disciplined move: only thin legs, ≤3 legs, ride instead when legs are sequential. The engine enumerates and ranks all of it by P(reach target).)*
 
 ### Finally, the hard truth: you can't beat the house
 
-Long term you can't, nobody can, and anyone selling "guaranteed wins" is lying. This model won't make you win — it makes you **lose the least, weld the floor shut, and occasionally steal a lucky night.** Bet only what you can afford to lose. See the margin. Never parlay.
+Long term you can't, nobody can, and anyone selling "guaranteed wins" is lying. This model won't make you win — it makes you **lose the least, weld the floor shut, and occasionally steal a lucky night.** Bet only what you can afford to lose. See the margin. Parlay only thin legs — never favorites.
 
 *That's* what we mean by **Beat the house**: not knocking it out — you can't — but never again kneeling to feed it.
 
@@ -70,20 +70,20 @@ Long term you can't, nobody can, and anyone selling "guaranteed wins" is lying. 
 
 **凭什么之二:水位是藏的,我们能看见。** 同一场日本 vs 瑞典:买日本胜 EV **−18%**,买那条没人要的平 EV **几乎是 0**。天壤之别,全藏在你看不见的地方。
 
-**凭什么之三:串关是陷阱,单关才是活路。** 同样几场,2 串 1 预期亏 **−22%**,拆成单关只亏 **−1.5%**。庄家最爱凌晨两点攥着短赔串关的那个人——别当那个人。
+**凭什么之三:串"热门"是陷阱,串关本身不是原罪。** 同样几场串厚水位热门,2 串 1 预期亏 **−22%**,拆成薄水位单关只亏 **−1.5%**。庄家最爱凌晨攥着短赔热门串关的那个人——别当那个人。*(但串*薄腿*、为搏单关够不到的大上限是另一回事:只串薄腿、腿≤3、能先后下注就用 ride。引擎会全枚举、按 P(达标) 排。)*
 
-**丑话说尽:你赢不了庄家。** 长期没人能,任何说"稳赚"的都在骗你。这套只让你**输得最少、把下限焊死、偶尔偷一个走运的夜晚**。只下你输得起的钱。看清水位。绝不串关。这,才是我们的 **Beat the house**。
+**丑话说尽:你赢不了庄家。** 长期没人能,任何说"稳赚"的都在骗你。这套只让你**输得最少、把下限焊死、偶尔偷一个走运的夜晚**。只下你输得起的钱。看清水位。串关只串薄腿、绝不串热门。这,才是我们的 **Beat the house**。
 
 ---
 
 ## 🛠 Use it / 怎么用
 
 - 📖 Skill (EN): [`en/SKILL.md`](en/SKILL.md) · 技能(中文): [`zh/SKILL.md`](zh/SKILL.md)
-- 🧮 Engine / 引擎: [`scripts/ev_predator.py`](scripts/ev_predator.py) — `python scripts/ev_predator.py matches.json --bankroll 100`
+- 🧮 Engine / 引擎: [`scripts/ev_predator.py`](scripts/ev_predator.py) — `python scripts/ev_predator.py m.json --goal reach --target 2` (or `--goal scan` / `--goal double`)
 - 🔌 Data-sourcing playbook / 抓取手册: [`references/data-sources.en.md`](references/data-sources.en.md) · [中文](references/data-sources.zh.md)
 
-The engine de-vigs the sharp market, computes per-outcome EV, finds the thinnest-margin line in each match, and prints the full profit/loss distribution of a singles-only bankroll.
-引擎自动去水、算每个选项 EV、找出每场水位最薄的线,并打印只单关组合的完整盈亏分布。
+The engine de-vigs the sharp market, computes per-outcome EV **+ the value line (payoff ratio × win-rate)**, enumerates **singles / ride / parlays** and ranks them by **P(reach target)** (which absorbs both payoff and margin), and always prints the **"safe vs swing" contrast** so you see the hit-rate you trade away for ceiling.
+引擎自动去水、算每选项 EV **+ 值博线(盈亏比×胜率)**、枚举**单关 / ride / 串关**并按 **P(达标)** 排序(同时含盈亏比与水位),并强制给出**"稳 vs 冲"对照**,让你看清为冲上限放弃多少命中率。
 
 ---
 

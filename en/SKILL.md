@@ -43,13 +43,15 @@ The market says "24% happens," it happened 23%; says "58%," it cashed 65% — **
 
 Same match, **Japan vs Sweden**: bet Japan to win, EV **−18%**; bet the draw nobody wants, EV **≈0%** — basically free. One bleeds you out, one barely costs a thing, and the gap is hidden where you never look. This model strips every bet bare and shows you where the margin is thin — bet the thin, walk past the thick.
 
-### Why #3: parlays are the trap — singles are the way out
+### Why #3: parlaying *favorites* is the trap — but the parlay itself isn't the sin
 
-A parlay *feels* like swinging for the fences. It actually **multiplies** the margin. Same handful of matches: as a 2-leg parlay, −22% expected; as singles, −1.5%. The house's favorite customer is the guy clutching a short-odds parlay at 2 a.m. Don't be that guy.
+A parlay *feels* like swinging for the fences; the cost is it **multiplies** the margin. Parlay **thick-margin favorites** — a 2-leg slip runs −22% expected; the same as thin-margin singles, −1.5%. The house's favorite customer is the guy clutching a short-odds favorite parlay at 2 a.m. Don't be that guy.
+
+**But draw the distinction:** parlaying *thin legs* to reach a ceiling a single can't touch is another matter — two thin legs combined can carry *less* total margin than one heavily-juiced longshot single. The rule: **only parlay thin legs, ≤3 legs, and if the legs kick off in sequence use ride instead.** See below.
 
 ### Finally, the hard truth: you can't beat the house
 
-Long term you can't, nobody can, and anyone selling "guaranteed wins" is lying to you. This model won't make you win — it makes you **lose the least, weld the floor shut, and occasionally steal a lucky night.** Bet only what you can afford to lose. See the margin. Never parlay.
+Long term you can't, nobody can, and anyone selling "guaranteed wins" is lying to you. This model won't make you win — it makes you **lose the least, weld the floor shut, and occasionally steal a lucky night.** Bet only what you can afford to lose. See the margin. Parlay only thin legs — never favorites.
 
 *That's* what we mean by **Beat the house**: not knocking it out — you can't — but never again kneeling to feed it.
 
@@ -67,8 +69,8 @@ Be sharp, be concrete, and **be honest** — this is real money.
 
 Do **not** sell a fantasy. This model **cannot beat the house long-term** — 体彩's margin (~6–12% per match, heavier on the World Cup) is a wall almost no recreational bettor clears. What this engine actually does:
 
-1. **Minimizes what you pay the house** (bet the −2% line, never the −16% line).
-2. **Maximizes the shape of the upside** for a given budget (good risk/reward, singles not parlays).
+1. **Minimizes what you pay the house** (bet the thin-margin line, never the −16% robbery).
+2. **Shapes the upside to the goal** — the right risk/reward and the right path (single / ride / parlay) for what you're actually trying to do (lose-less vs go-for-2x vs chase-a-big-ceiling).
 3. **Caps the downside absolutely** (hard bankroll limit = entertainment cost).
 
 Frame every output as *harm-reduction + edge-discipline*, not "a money printer."
@@ -91,26 +93,51 @@ Consequence: in the **same** match the favorite line can be −16% EV while the 
 
 ⚠️ **It is NOT always the draw.** In balanced matches the draw itself can be the worst line (measured Norway–France: draw −15.8%, underdog Norway −9.8% — there the underdog was the play). **Never assume. Recompute every match.**
 
+## The value line: payoff-ratio × win-rate (is it worth a punt?)
+
+EV just mashes p and o into one scalar. The equivalent, more intuitive view:
+- **Payoff ratio b = odds − 1**; **win-rate = p**.
+- **Worth a punt ⟺ win-rate × odds `p·o > 1` ⟺ payoff ratio `b > (1−p)/p` ⟺ `p > 1/o`** (all the same thing).
+- **Value-line gap = `b − (1−p)/p`** (<0 = below the line = 体彩 is robbing you).
+- **A low win-rate can still be worth it** — if the payoff ratio clears the line (e.g. 17% win-rate with payoff ratio >4.9). Don't veto a leg just because the win-rate is low.
+- Kelly stake fraction `f* = EV / payoff-ratio` (≤0 → don't bet).
+
+## Margin is not the objective — but never ignore it
+
+Margin (=EV) is **not the objective function** — on 体彩 everything is −EV, so ranking purely by margin means you'd never bet. But it's **not meaningless** either: it's how you pick the best ticket at a given prize. The key formula:
+
+```
+P(reach target) = (1 / total odds) × (1 − margin)
+```
+
+- **Payoff ratio / total odds** sets *how big the prize is*; **margin** sets *what fraction of fair probability you get for that prize*.
+- For the same prize, higher margin = lower hit-rate — and 体彩 hides the **thickest margin on the biggest-payoff tickets** (the longshot trap). "Big payoff so ignore the margin" is exactly the trap it sets.
+- **So rank by `P(reach target)`**: one number that absorbs both payoff ratio and margin. Payoff ratio picks the prize tier; margin picks the best ticket in that tier.
+
+## The goal decides the play (don't preset, don't favor one)
+
+Fix the goal first, then choose the play:
+- **Goal A · lose less (risk-neutral):** rank by `EV` or `EV − λ·SD` (λ≈0.4), bet the 1–2 thinnest-margin lines, singles. Mode A (pure +EV) means betting almost never on 体彩 — that's correct, not illogical.
+- **Goal B · reach a target (double / chase a big ceiling):** this is bold play in a −EV game with a target line — concentrate, be bold, rank by `P(reach target)`, **do NOT flat-split** (flat-splitting is the mathematically worst target-reaching strategy). "Target" can have a doubling floor and an uncapped top.
+- Under either goal you still look at margin (it's inside P(reach target)) — it's just no longer the sole sort key.
+
 ## Workflow
 
-1. **Get 体彩 odds (`o`)** — full home/draw/loss board. Prefer the user's own 体彩 App or a photo of the slip (exact). Scraping is approximate; see `references/data-sources.en.md`. 体彩 odds move during the day.
-2. **Get sharp probabilities (`p`)** — de-vig (normalize `1/odds` to sum to 1) from: **Polymarket** (live, backtested calibration 64.8%→66%), **Betfair Exchange** + **PS3838/BetInAsia** (= Pinnacle's Asian book, on oddsportal match pages), or **oddsportal consensus** (weaker). See `references/data-sources.en.md` for exactly how to fetch.
-3. **Compute EV** for every outcome: `python scripts/ev_predator.py matches.json --bankroll 100`.
-4. **Pick the line per match** — the engine flags the highest-EV outcome. Could be favorite, draw, or underdog. Trust the number.
-5. **Size the bankroll:**
-   - *Mode A — pure +EV (rare on 体彩):* bet only EV>0, stake with ¼-Kelly. On 体彩 this means betting almost never — that's correct.
-   - *Mode B — accept −EV, minimize bleed:* bet only the least-bad lines, **singles only**, under a **hard cap**. The engine prints the full outcome distribution.
-6. **Output the slip** (template below).
+1. **Clear the time gate first**: 体彩 sells in daytime/evening, closing ~15–30 min before kickoff; World Cup games mostly kick off **overnight (China time)** → you must **buy upfront in the daytime** → **ride is impossible for overnight games** (you can't place leg 2 at 5 a.m.), so the only way to combine multiple games upfront is a **parlay**. Drop matches you can't buy first.
+2. **Get 体彩 odds (`o`)** — full home/draw/loss board. Prefer the user's own 体彩 App or a photo of the slip (exact). See `references/data-sources.en.md`.
+3. **Get sharp probabilities (`p`)** — de-vig (normalize `1/odds` to 1): **Polymarket** (live, backtest 64.8%→66%), **Betfair Exchange** + **PS3838/BetInAsia** (= Pinnacle's Asian book), or **oddsportal consensus** (weaker). Tag every number source + time + single/cross-checked.
+4. **Enumerate paths, rank by goal**: `python scripts/ev_predator.py m.json --goal reach --target 2 --sigma 0.01`. Singles / ride (sequential only) / 2–3-leg parlays, ranked by `P(reach target)` and margin.
+5. **Size it**: hard cap = money you'll fully lose, never reload. Reaching a target → don't flat-split, concentrate by P(reach target); report P(reach) AND P(lose-all); for "uncapped upside + lose less" use a **barbell** (main thin-leg bet + one small independent high-odds flyer).
+6. **Output the slip + mandatory contrast** (template below).
 
-### Iron rules (explain the why each time)
-- **Singles, never parlays.** A 2-leg parlay multiplies the vig (~6.5% → ~13%+). A round-robin can run −22% EV; the same matches as draw singles run −1.5%. Parlays *feel* like max upside but are max bleed.
-- **Hard cap = money you'll fully lose.** Never reload. The only real "minimize loss."
-- **Negative-EV math is inverted:** more bets = more certain loss. Stay concentrated (Dubins–Savage "bold play"); don't diversify into oblivion.
-- **Report P(lose-all) alongside EV.** A −1.5% EV portfolio can still have a ~44% chance of losing the whole stake — the variance price of low-margin/high-odds lines. The user must see it.
+### Iron rules (revised — explain the why each time)
+- **Parlays are no longer banned outright.** Parlaying **thick-margin favorites** is the trap; parlaying **thin legs** to reach a ceiling a single can't touch is not. Rules: ① only thin legs (each near the value line); ② ≤3 legs (margin compounds); ③ if legs are sequential, ride instead of parlay; ④ parlay only when legs are simultaneous OR a single can't reach the target.
+- **Hard cap = money you'll fully lose**, never reload — the only real "minimize loss." Kelly is 0 on −EV, so this is an entertainment budget, not an investment.
+- **Margin is not the objective but never ignore it**: rank by `P(reach target)` (already contains payoff ratio + margin); when reaching a target stay concentrated (Dubins–Savage "bold play"), don't diversify into oblivion.
+- **Always give the "safe vs swing" contrast**: the highest-P(reach) safe bet vs the ceiling bet + how many points of hit-rate you give up for the ceiling — show this even when the user only wants one answer, so they see the cost before deciding. Report P(lose-all) too.
 
 ## Timing
-- Use the sharp price *at the moment you bet* — don't wait for the close.
-- Sweet spot: **~60 min before kickoff**, after lineups drop (体彩's fixed odds lag → biggest mispricing window).
+- Use the sharp price *at the moment you bet*. Sweet spot ~60 min before kickoff (after lineups) — BUT for **overnight games you can't reach that window**, so buy in the daytime and accept a snapshot from hours earlier (measured drift over half a day was mostly 0–3pt; the real risk is missing the lineup-release jump at ~T-1h).
 - 体彩 stops selling **~15–30 min before kickoff** — place with a buffer.
 - 竞彩 win/draw/loss settles on **90 minutes only** (no extra time/penalties). Knockout games that go to ET/pens still settle as a **draw** — knockout 90-min draws are common.
 
@@ -119,16 +146,26 @@ Consequence: in the **same** match the favorite line can be −16% EV while the 
 
 ## Output template (in the user's language)
 
+Every probability/odds number carries source + time + single/cross-checked. Per-match scan has a fixed **7 columns**. **When the user is overwhelmed, don't hand a menu — the verdict is one conclusion, but it MUST carry the "safe vs swing" contrast.**
+
 ```
 ⚡ WORLD CUP EV PREDATOR · Report
-Data sources: <each p tagged with source + time + single/cross-checked>
+Data sources: <each p tagged source + time + single/cross-checked; if sharp not pulled, mark "TBD">
 
-[Per-match EV scan]  <home/draw/away EV; flag thinnest-margin side>
-[Slip — total X · singles]  <ticket | match | pick | 体彩 odds | stake | true prob | EV>
-[Portfolio distribution]  P(profit) __%  P(lose-all) __%  EV __ (__%)  best +__  worst −__
-[Verdict]  <which to bet / all PASS; why; margin saved vs the gut-feel bet>
+[Per-match scan] match | pick | book-implied(1/odds) | 体彩 odds | true(Polymarket) | sharp(Pinnacle/Betfair) | payoff ratio | value-line gap | EV   <flag thinnest margin>
+[Path frontier · by goal] tier | play(single/ride/parlay) | payoff ratio | P(reach) | margin | win@X   <drop un-buyable matches first>
+[Contrast · safe vs swing (mandatory)] Safest: <play> P(reach)__% __x | Biggest ceiling: <play> P(reach)__% __x | → give up __pt of hit-rate for the ceiling
+[Slip — total X (≤ hard cap)] ticket | play | match/leg | 体彩 odds | stake | P(reach) | leg margin
+[Portfolio distribution] P(reach/profit) __%  P(lose-all) __%  E[final] __ (__%)  hit +__  big +__  worst −__
+[Verdict · one conclusion] which to bet & how much; why (payoff×win-rate fit + goal); timing note
 ⚠️ 体彩 is long-run negative EV. This only minimizes cost and caps the downside. Odds move — confirm in-App.
 ```
 
 ## The engine
-`scripts/ev_predator.py` does all the math: de-vig, per-outcome EV, best-line flagging, and the full 2ⁿ portfolio outcome distribution. Feed it a JSON of matches (and optionally chosen bets+stakes). Run `python scripts/ev_predator.py --help` or see the example at the bottom of the script. Prefer the engine over hand arithmetic.
+`scripts/ev_predator.py` has three modes:
+- `--goal scan` (default): per-match 7 columns (book-implied / odds / true / sharp / payoff ratio / value-line gap / EV) + thinnest margin; `--sigma 0.01` adds the robust buffer (thicker for high-odds legs).
+- `--goal reach --target 2`: enumerate singles / 2-leg / 3-leg parlays, rank by `P(reach target)`, and **always print the "safe vs swing" contrast** (`--pfloor` tunes the ceiling-bet's hit-rate floor). This is the "how do I bet today" workhorse.
+- `--goal double --target 2`: all-in frontier + base × let-it-ride combos.
+- `--bankroll N` + `bets` in the JSON: enumerate the 2ⁿ profit/loss distribution (P(reach), P(lose-all), best/worst).
+
+Per-match JSON fields: `sharp_prob` (fills the sharp column), `sigma`, `kickoff`. Run `--help` for the format. Prefer the engine over hand arithmetic. **Honesty > pleasing the user.**
